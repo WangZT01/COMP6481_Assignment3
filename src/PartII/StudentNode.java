@@ -2,35 +2,28 @@ package PartII;
 
 /**
  * The signal student node.
- * @author WangZ
+ * @author Zitao Wang & Jiaming Han
  *
+ *pre -> left
+ *next -> right
  */
-public class StudentNode {
+public class StudentNode{
 	
-	private long StudentIDentificationCode;
-	private String studentName;
-	StudentNode pre;
-	StudentNode next;
+	long StudentIDentificationCode;
+	String studentName;
 	public StudentNode() {
 		
 		this.StudentIDentificationCode = 0;
 		this.studentName = null;
-		this.pre = null;
-		this.next = null;
+
 	}
 	public StudentNode(long key, String value) {
 		this.StudentIDentificationCode = key;
 		this.studentName = value;
-		this.pre = null;
-		this.next = null;
+
 		
 	}
-	public StudentNode(long key, String value, StudentNode pre, StudentNode next) {
-		this.StudentIDentificationCode = key;
-		this.studentName = value;
-		this.pre = pre;
-		this.next = next;
-	}
+
 	public String getValue() {
 		return this.studentName;
 	}
@@ -39,6 +32,22 @@ public class StudentNode {
 	}
 	public void printNode() {
 		System.out.println( this.getKey() + " , " + this.getValue());
+	}
+	
+	
+	/*
+	 *  -1 left
+	 *  1 right
+	 */
+	public int compareTo(long key) {
+		
+		if (key > this.StudentIDentificationCode){
+            return 1;
+        }else if( key < this.StudentIDentificationCode ){
+            return -1;
+        }else {
+        	return 0;
+        }
 	}
 
 }
