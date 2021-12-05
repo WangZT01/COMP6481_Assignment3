@@ -19,63 +19,83 @@ public class CleverSIDC {
 	}
 	/**
 	 * Set the size.
-	 * @param Size           
+	 * @param Size
 	 */
 	public void SetSIDCThreshold(long Size) {
-		
+
 		if(this.size == 0) {
 			if(Size < 100 || Size > 500000) {
 				System.out.println("The Size is invalid.");
 			}
 			else {
-				
+
 				if(Size >= 100 && Size <= 500){
-					
+
 					studentList = new LinkedList[25];// 25 * (4-20);
 					this.size = 25;
 					for(int i = 0; i < 25; i++) {
 						studentList[i] = new LinkedList();
 					}
-					
+
 				}
 				else if(Size > 500 && Size <= 5000){
-					
+
 					studentList = new LinkedList[50];// 50 * (10-100);
 					this.size = 50;
 					for(int i = 0; i < 50; i++) {
 						studentList[i] = new LinkedList();
 					}
-					
+
 				}
 				else if(Size > 5000 && Size <= 50000){
-					
+
 					studentList = new LinkedList[500];// 500 * (10-100);
 					this.size = 500;
 					for(int i = 0; i < 500; i++) {
 						studentList[i] = new LinkedList();
 					}
-					
+
 				}
 				else if(Size > 50000 && Size <= 500000){
-					
+
 					avltreelist = new AVLTreeList();
-					this.size = Size;				
+					this.size = 500000;
 				}
 			}
 
 		}
 		else {
-			transfer(Size);
+
+			long newSize = Size;
+			if(Size < 100 || Size > 500000) {
+				System.out.println("The Size is invalid.");
+			}
+			else if(Size >= 100 && Size <= 500){
+				newSize = 25;
+			}
+			else if(Size > 500 && Size <= 5000){
+				newSize = 50;
+			}
+			else if(Size > 5000 && Size <= 50000){
+				newSize = 500;
+			}
+			else if(Size > 50000 && Size <= 500000){
+				newSize = 500000;
+			}
+			if(newSize > this.size)
+				transfer(Size);
+			else
+				System.out.println("Current size is enough.");
 		}
 	}
-	
-	
-	
+
+
+
 	public void transfer(long Size) {
 		LinkedList[] l = null;
 		if(Size <= 50000) {
 			if(Size >= 100 && Size <= 500){
-			
+
 				l = new LinkedList[25];// 25 * (4-20);
 				for(int i = 0; i < 25; i++) {
 					l[i] = new LinkedList();
@@ -87,7 +107,7 @@ public class CleverSIDC {
 					}
 					else {
 						while( node.next != null) {
-						
+
 							int x = getIndexT(node.getKey(), 25);
 							l[x].addInList(node.getKey(), node.getValue());
 							node = node.next;
@@ -102,7 +122,7 @@ public class CleverSIDC {
 				//this.allKeys();
 			}
 			else if(Size > 500 && Size <= 5000){
-				
+
 				l = new LinkedList[50];// 50 * (10-100);
 				for(int i = 0; i < 50; i++) {
 					l[i] = new LinkedList();
@@ -114,11 +134,11 @@ public class CleverSIDC {
 					}
 					else {
 						while( node.next != null) {
-						
+
 							int x = getIndexT(node.getKey(), 50);
 
 							l[x].addInList(node.getKey(), node.getValue());
-							
+
 							node = node.next;
 						}
 						int x = getIndexT(node.getKey(), 50);
@@ -127,12 +147,12 @@ public class CleverSIDC {
 
 				}
 				studentList = l;
-				this.size = 50;				
+				this.size = 50;
 				//this.allKeys();
 
 			}
 			else if(Size > 5000 && Size <= 50000){
-				
+
 				l = new LinkedList[500];// 500 * (10-100);
 				for(int i = 0; i <500; i++) {
 					l[i] = new LinkedList();
@@ -144,7 +164,7 @@ public class CleverSIDC {
 					}
 					else {
 						while( node.next != null) {
-						
+
 							int x = getIndexT(node.getKey(), 500);
 							l[x].addInList(node.getKey(), node.getValue());
 							node = node.next;
@@ -158,42 +178,42 @@ public class CleverSIDC {
 				studentList = l;
 				this.size = 500;
 				//this.allKeys();
-				
+
 			}
 
 		}
 		else {
-				AVLTreeList avl = new AVLTreeList();
-				
-				for(int i = 0; i < this.size; i++) {
-					ListNode node = studentList[i].head;
-					if(node == null) {
-						continue;
-					}
-					else {
-						while( node.next != null) {
-						
-							avl.add(avl, node.getKey(), node.getValue());
-							node = node.next;
-						}
-						int x = getIndexT(node.getKey(), 500);
-						avl.add(avl, node.getKey(), node.getValue());
-					}
+			AVLTreeList avl = new AVLTreeList();
 
+			for(int i = 0; i < this.size; i++) {
+				ListNode node = studentList[i].head;
+				if(node == null) {
+					continue;
 				}
-				
-				
-				this.avltreelist = avl;
-				this.size = Size;
+				else {
+					while( node.next != null) {
+
+						avl.add(avl, node.getKey(), node.getValue());
+						node = node.next;
+					}
+					int x = getIndexT(node.getKey(), 500);
+					avl.add(avl, node.getKey(), node.getValue());
+				}
+
+			}
+
+
+			this.avltreelist = avl;
+			this.size = 500000;
 		}
-		
-		
+
+
 	}
-	
+
 	private int getSize() {
 		return studentList.length;
 	}
-	
+
 	private int getIndexT(long key, long size) {
 		long linkMaxSize = 90000000 / size;
 		//System.out.println("Max SIZE IS: " + linkMaxSize);
@@ -231,7 +251,7 @@ public class CleverSIDC {
 		//System.out.println("target IS: " + target);
 		return target;
 	}
-	
+
 	/**
 	 * randomly generates new non-existing key of 8 digits;
 	 * call the contains function in the LinkedList.
@@ -243,7 +263,7 @@ public class CleverSIDC {
 			DISC = getRandom();
 		}
 		return DISC;
-		
+
 	}
 	private long getRandom() {
 		Random random = new Random();
@@ -257,20 +277,20 @@ public class CleverSIDC {
 		return sidc;
 	}
 	private boolean checkSIDC(long key) {
-		
+
 		if(this.size <= 50000) {
 			int index = this.getIndex(key);
 			System.out.println(index);
-			return studentList[index].contains(key);			
+			return studentList[index].contains(key);
 		}
 		else {
 			return this.avltreelist.contains(key);
 		}
-		
+
 	}
 	/**
 	 * Print all keys
-	 * 
+	 *
 	 */
 	public void allKeys() {
 		if(size <= 50000) {
@@ -292,7 +312,7 @@ public class CleverSIDC {
 	 * @param value : Name
 	 */
 	public void add(long key, String value) {
-		
+
 		if(size <= 50000) {
 			if(checkSIDC(key)) {
 				System.out.println("This SIDC is exist, a new number is being randomized.");
@@ -307,7 +327,7 @@ public class CleverSIDC {
 		}
 
 	}
-	
+
 	/**
 	 * remove the key
 	 * @param key
@@ -315,28 +335,28 @@ public class CleverSIDC {
 	public void remove(long key) {
 		if(size <= 50000) {
 			int index = this.getIndex(key);
-			studentList[index].RemoveInList(key);			
+			studentList[index].RemoveInList(key);
 		}
 		else {
 			avltreelist.remove(avltreelist, key);
 		}
 
 	}
-	
+
 	public void getValues(long key) {
-		
+
 		if(size <= 50000) {
 			int index = this.getIndex(key);
-			studentList[index].getValueByKey(key);		
+			studentList[index].getValueByKey(key);
 		}
 		else {
 			avltreelist.getValues(avltreelist, key);
 		}
-		
+
 	}
-	
+
 	public void nextKey(long key) {
-		
+
 		if(size <= 50000) {
 			int index = this.getIndex(key);
 			ListNode node = studentList[index].getTargetNode(key);
@@ -345,7 +365,7 @@ public class CleverSIDC {
 				return;
 			}
 			if(node.next == null) {
-			
+
 				for(int i = index+1; i < size; i++) {
 					if( studentList[i].size() != 0 ) {
 						studentList[i].head.printNode();
@@ -364,7 +384,7 @@ public class CleverSIDC {
 		}
 
 	}
-	
+
 	public void prevKey(long key) {
 		if(size <= 50000) {
 			int index = this.getIndex(key);
@@ -374,7 +394,7 @@ public class CleverSIDC {
 				return;
 			}
 			if(node.pre == null) {
-				
+
 				for(int i = index-1; i >= 0; i--) {
 					if( studentList[i].size() != 0 ) {
 						studentList[i].tail.printNode();
@@ -383,7 +403,7 @@ public class CleverSIDC {
 				}
 				System.out.println("There is no pre key.");
 				return;
-				
+
 			}
 			else {
 				node.pre.printNode();
@@ -395,7 +415,7 @@ public class CleverSIDC {
 		}
 	}
 	public void rangeKey(long key1, long key2) {
-		
+
 		if(size <= 50000) {
 			int index1 = this.getIndex(key1);
 			int index2 = this.getIndex(key2);
@@ -407,9 +427,9 @@ public class CleverSIDC {
 			if(node2 == null) {
 				node2 = studentList[index2].head;
 			}
-			
+
 			if(index1 == index2) {
-				
+
 				if(node1 == null) {
 					System.out.println("No key in this range:" + key1 + "-" + key2);
 					return;
@@ -423,7 +443,7 @@ public class CleverSIDC {
 				}
 			}
 			else {
-				
+
 				for(int i = index1 ; i <= index2; i++) {
 					if( studentList[i].size() != 0 ) {
 						node1 = studentList[i].head;
@@ -436,13 +456,13 @@ public class CleverSIDC {
 						}
 					}
 				}
-				
+
 			}
 		}
 		else {
 			avltreelist.rangeKey(key1, key2);
 		}
 	}
-	
-	
+
+
 }
